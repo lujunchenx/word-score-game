@@ -103,7 +103,9 @@ var BAG_OF_LETTERS = [
 
 var YOUR_HAND = new Array();
 var SCORE = 0;
+var OVER = false;
 function startGame() {
+      OVER = false;
 	addNumbersFromBag();
 	displayHand();
 	
@@ -114,13 +116,25 @@ function startGame() {
 function addNumbersFromBag(){
 	console.log("your hand has:" + YOUR_HAND.length);
 	for(i=YOUR_HAND.length; i < 7; i++){
-		YOUR_HAND[i] = getAvailableLetter();
+            var test = getAvailableLetter();
+            if(typeof(test) == "undefined"){
+                if(i==0){
+                    OVER = true;
+                }
+                return;
+            }
+		YOUR_HAND[i] = test;
+            
 	}
 	
 }
 
 
 function displayHand(){
+      if(OVER){
+          alert("Game end, your score is "+SCORE+". Click ok to restart!");
+          history.go(0);
+      }
 	console.log("your hand has:" + YOUR_HAND.length);
 	for (i = 0; i < YOUR_HAND.length; i++) {
 
@@ -135,6 +149,10 @@ function displayHand(){
 		
 		$( "#points-" + (i+1)).html(YOUR_HAND[i].pointsWhenLettersUsed);
 	}
+      for(;i<7;i++){
+          $( "#letter-" + (i+1)).html("");
+	    $( "#points-" + (i+1)).html("");
+      }
 	
 }
 
